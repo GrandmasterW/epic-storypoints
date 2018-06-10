@@ -1,8 +1,8 @@
 (defproject jira "0.1.0-SNAPSHOT"
   :description "An example how to compute story points for JIRA epics for JIRA Server REST API - to be used as a base for your own experiments, not suitable for production yet!"
   :url "http://www.atlassian.com"
-  :license {:name "Apache License v.2.0"
-            :url "http://www.apache.org/licenses/LICENSE-2.0.html"}
+  :license {:name "Eclipse Public License 2.0"
+            :url "https://www.eclipse.org/legal/epl-2.0/"}
   :jvm-opts ["--add-modules" "java.xml.bind"]
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/data.json "0.2.6"]
