@@ -2,7 +2,8 @@
  (:require [clj-http.client :as client]
            [clojure.data.json :as json]
            [clojure.edn :as edn]
-           [jira.hicout :as hic])
+           [jira.hicout :as hic]
+	   )
 (:gen-class))
 
 
@@ -20,10 +21,10 @@
                                    "fields" fields
                                    }}
         response (client/get jurl myheader) ; this is the real call via http
-        body (if (= (:status response) 200) (json/read-str (:body response)) {}) ]
+        body (if (= (:status response) 200) (json/read-str (:body response)) {}) ] ; interpret string body as json and make proper data structure
     (if body
-      (get body "issues")
-      {})))
+      (get body "issues") ; only the issues are relevant
+      {}))) ; empty hashmap otherwise
 
 ; ----
 ; Epics
@@ -46,8 +47,7 @@
 (defn get-open-epics [config]
   "retrieves open epics in project as a collection of issues and associated information: release dates, summary"
   (let [jql (str "project = " (:project config)
-                 " AND issuetype = Epos"
-                 " AND resolution = Unresolved ORDER BY key ASC")
+                 " AND issuetype = Epos AND resolution = Unresolved ORDER BY key ASC") ; this query should be independent of JIRA customization
         issues (get-jira-issues config jql (:fields-epic config)) ]
     (if issues
       (reduce conj (map retrieve-epic-info issues)) ; join all the hashmaps into one
@@ -61,7 +61,8 @@
   "create jql query"
   (str
     "project = " (:project config)
-    " AND status in (Open, \"In Progress\", Reopened) AND resolution = Unresolved AND Epos-Verknüpfung = "
+    " AND status in (Open, \"In Progress\", Reopened) AND resolution = Unresolved" ; independent of customization
+    (:epic-link-jql config) ; use query part from config due to JIRA customization
     epic-key
     " ORDER BY key ASC"))
 
@@ -113,13 +114,14 @@
 
 ; ----
 
-(defn -main
-  "Retrieves the epics for the config.edn supplied, retrieves the stories for each epic and sums up story points and not estimated stories - returns an html page"
-  [& args]
-  (let [config (get-config "config.edn")
-       html (report-open-epics config)]
-       (println html)))
 
+
+(defn -main
+  "Retrieves the epics for the config.edn supplied, retrieves the stories for each epic and sums up story points and not estimated stories - returns an html page to stdout"
+  [& args]
+    (let [config (get-config "config.edn")
+	 html (report-open-epics config)]
+	 (println html)))
 
 ; - remove the following for production !!!!!!
 (def config (get-config "config.edn")) ; read from file

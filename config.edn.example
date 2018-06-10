@@ -1,0 +1,24 @@
+{
+ :mypath "/Users/johndoe/.jiraauth"  ; change: the secret file containing username:password without a trailing newline!!!!
+ :baseurl "https://jira.server.com"  ; change: the base url of your server
+ :rest-search "/rest/api/2/search"   ; should be constant
+ :start-at 0                         ; constant for us: start offset for JIRA query
+ :maxresults 100                     ; change: how many epics? how many issues per epic? 
+ :project "MYP"                      ; change: the short name of your project as in JIRA issue name: "MYP-112"
+ :storypoint-field "customfield_1103" ; change: find out the name of the customfield which contains the story points per issue
+ :fields-epic "id,key,summary,fixVersions" ; constant: which field do we need for an epic?
+ :fields-story "id,key,customfield_1103" ; change: storypoint-field as last one - which fields do we need for an issue?
+ :epic-link-jql " AND Epos-Verknüpfung = " ; change: JQL condition for epic-link, example in German, MIND THE SPACES at beginning and end!
+ :css-file "mystyle.css" ; change: CSS file, used for reference in html output
+ :spit-results false ; change: shall the program output the result map into an auxiliary file - useful for debugging
+ :results-edn "data/results.edn" ; change: if :spit-results true then program will create this file to support your debugging
+ :title "&Uuml;bersicht" ; change: title of html page, example with Umlaut (German)
+ :th ; table header labels ; change: the column header titles of the created table, examples in German 
+     [ "Vorgang" ; issue
+      "Titel" ; summary 
+      "Release" ; release 
+      "Offene Vorg&auml;nge" ; open issues 
+      "Offene Storypoints" ; open storypoints 
+      "Nicht gesch&auml;tzte Vorg&auml;nge" ; not-estimated issues
+      ]
+}
