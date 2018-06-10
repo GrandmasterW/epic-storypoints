@@ -72,5 +72,5 @@ possible.
 
 Copyright © 2018 Werner Beckmann
 
-Distributed under the Apache License v.2.0. Feel free to use, expand
+Distributed under the Eclipse Public License v.2.0. Feel free to use, expand
 and distribute to help other people! 
